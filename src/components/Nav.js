@@ -2,20 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMusic } from "@fortawesome/free-solid-svg-icons";
-import logo from '../img/logo/Circle_Logo_png.png';
+import logo from '../img/logo/Circle_Logo_png.png'; 
 
 const Nav = ({ libraryStatus, setLibraryStatus }) => {
 	return (
 		<NavContainer>
 			<Logo src={logo} alt="Logo" />
 			<H1 libraryStatus={libraryStatus}>Web3 Music Platform</H1>
-			<Button onClick={() => setLibraryStatus(!libraryStatus)}>
-				Library
-				<FontAwesomeIcon icon={faMusic} />
-			</Button>
-			<Button>
-				My Profile	
-			</Button>
+			<ButtonContainer>
+				<Button onClick={() => setLibraryStatus(!libraryStatus)}>
+					Library
+					<FontAwesomeIcon icon={faMusic} />
+				</Button>
+				<Button>
+					My Profile	
+				</Button>
+			</ButtonContainer>
 		</NavContainer>
 	);
 };
@@ -23,42 +25,54 @@ const Nav = ({ libraryStatus, setLibraryStatus }) => {
 const NavContainer = styled.div`
 	min-height: 10vh;
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 	align-items: center;
+	padding: 0 2rem;
+	background-color: #f8f9fa;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 	@media screen and (max-width: 768px) {
+		flex-direction: column;
 		position: fixed;
 		z-index: 10;
 		top: 0;
 		left: 0;
 		width: 100%;
+		padding: 1rem;
 	}
 `;
 
 const Logo = styled.img`
-	height: 50px; /* Logo boyutunu buradan ayarlayabilirsiniz */
-	margin-right: 1rem; /* Logo ile başlık arasındaki boşluk */
+	height: 50px;
+	width: auto;
 `;
 
 const H1 = styled.h1`
-	transition: all 0.5s ease;
-
+	margin: 0;
+	font-size: 1.5rem;
+	color: #333;
+	transition: opacity 0.5s ease;
 	@media screen and (max-width: 768px) {
 		visibility: ${(p) => (p.libraryStatus ? "hidden" : "visible")};
 		opacity: ${(p) => (p.libraryStatus ? "0" : "100")};
-		transition: all 0.5s ease;
 	}
+`;
+
+const ButtonContainer = styled.div`
+	display: flex;
+	gap: 1rem;
 `;
 
 const Button = styled.button`
 	background: transparent;
-	border: none;
+	border: 2px solid #333;
+	color: #333;
 	cursor: pointer;
-	border: 2px solid rgb(65, 65, 65);
-	padding: 0.5rem;
-	transition: all 0.3s ease;
+	border-radius: 5px;
+	padding: 0.5rem 1rem;
+	transition: background 0.3s ease, color 0.3s ease;
 	&:hover {
-		background: rgb(65, 65, 65);
-		color: white;
+		background: #333;
+		color: #fff;
 	}
 `;
 
