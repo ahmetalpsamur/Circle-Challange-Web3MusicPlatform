@@ -2,14 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMusic } from "@fortawesome/free-solid-svg-icons";
+import logo from '../img/logo/Circle_Logo_png.png';
 
 const Nav = ({ libraryStatus, setLibraryStatus }) => {
 	return (
 		<NavContainer>
-			<H1 libraryStatus={libraryStatus}>Vibes</H1>
+			<Logo src={logo} alt="Logo" />
+			<H1 libraryStatus={libraryStatus}>Web3 Music Platform</H1>
 			<Button onClick={() => setLibraryStatus(!libraryStatus)}>
 				Library
 				<FontAwesomeIcon icon={faMusic} />
+			</Button>
+			<Button>
+				My Profile	
 			</Button>
 		</NavContainer>
 	);
@@ -27,6 +32,11 @@ const NavContainer = styled.div`
 		left: 0;
 		width: 100%;
 	}
+`;
+
+const Logo = styled.img`
+	height: 50px; /* Logo boyutunu buradan ayarlayabilirsiniz */
+	margin-right: 1rem; /* Logo ile başlık arasındaki boşluk */
 `;
 
 const H1 = styled.h1`
