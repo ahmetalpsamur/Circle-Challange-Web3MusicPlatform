@@ -1,39 +1,93 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faIdBadge, faUserPlus, faKey, faUserCheck, faWallet } from "@fortawesome/free-solid-svg-icons";
+import { faIdBadge, faUserPlus, faKey, faUserCheck, faWallet, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const Profile = () => {
+    const [selectedAction, setSelectedAction] = useState(null);
+
+    const handleSidebarClick = (action) => {
+        setSelectedAction(action);
+    };
+
+    const getActionButtonProps = () => {
+        switch (selectedAction) {
+            case 'getMyProfile':
+                return {
+                    icon: faUser,
+                    text: 'Get My Profile',
+                };
+            case 'getAppId':
+                return {
+                    icon: faIdBadge,
+                    text: 'Get App ID',
+                };
+            case 'createUser':
+                return {
+                    icon: faUserPlus,
+                    text: 'Create User',
+                };
+            case 'acquireToken':
+                return {
+                    icon: faKey,
+                    text: 'Acquire Token',
+                };
+            case 'initializeUser':
+                return {
+                    icon: faUserCheck,
+                    text: 'Initialize User',
+                };
+            case 'completeWallet':
+                return {
+                    icon: faWallet,
+                    text: 'Complete Wallet',
+                };
+            default:
+                return {
+                    icon: null,
+                    text: '',
+                };
+        }
+    };
+
+    const { icon, text } = getActionButtonProps();
+
     return (
         <ProfileContainer>
             <Sidebar>
-                <SidebarItem>
+            <SidebarItem onClick={() => handleSidebarClick('getMyProfile')}>
+                    <FontAwesomeIcon icon={faUser} />
+                    <span>Get My Profile</span>
+                </SidebarItem>
+                <SidebarItem onClick={() => handleSidebarClick('getAppId')}>
                     <FontAwesomeIcon icon={faIdBadge} />
                     <span>Get App ID</span>
                 </SidebarItem>
-                <SidebarItem>
+                <SidebarItem onClick={() => handleSidebarClick('createUser')}>
                     <FontAwesomeIcon icon={faUserPlus} />
                     <span>Create User</span>
                 </SidebarItem>
-                <SidebarItem>
+                <SidebarItem onClick={() => handleSidebarClick('acquireToken')}>
                     <FontAwesomeIcon icon={faKey} />
                     <span>Acquire Token</span>
                 </SidebarItem>
-                <SidebarItem>
+                <SidebarItem onClick={() => handleSidebarClick('initializeUser')}>
                     <FontAwesomeIcon icon={faUserCheck} />
                     <span>Initialize User</span>
                 </SidebarItem>
-                <SidebarItem>
+                <SidebarItem onClick={() => handleSidebarClick('completeWallet')}>
                     <FontAwesomeIcon icon={faWallet} />
                     <span>Complete Wallet</span>
                 </SidebarItem>
             </Sidebar>
             <Content>
                 <ButtonContainer>
-                    <ActionButton>
-                        <FontAwesomeIcon icon={faIdBadge} />
-                        <span>Get App ID</span>
-                    </ActionButton>
+                    {icon && text && (
+                        <ActionButton>
+                            <FontAwesomeIcon icon={icon} />
+                            <span>{text}</span>
+                        </ActionButton>
+                    )}
                 </ButtonContainer>
             </Content>
         </ProfileContainer>
