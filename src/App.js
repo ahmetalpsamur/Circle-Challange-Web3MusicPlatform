@@ -8,7 +8,6 @@ import Player from "./components/Player";
 import Song from "./components/Song";
 import Library from "./components/Library";
 import Nav from "./components/Nav";
-import Credit from "./components/Credit";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 
@@ -89,7 +88,6 @@ const App = () => {
 					setSongs={setSongs}
 					libraryStatus={libraryStatus}
 				/>
-				<Credit />
 				<audio
 					onLoadedMetadata={updateTimeHandler}
 					onTimeUpdate={updateTimeHandler}

@@ -2,12 +2,38 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdBadge, faUserPlus, faKey, faUserCheck, faWallet, faUser } from "@fortawesome/free-solid-svg-icons";
+import { get_app_id } from "../api/getAppId"; // Import the function
+import { create_a_new_user } from "../api/createUserId"; // Import the create user function
 
 const Profile = () => {
     const [selectedAction, setSelectedAction] = useState(null);
+    const [actionResult, setActionResult] = useState(null);
 
-    const handleSidebarClick = (action) => {
+    const handleSidebarClick = async (action) => {
         setSelectedAction(action);
+        setActionResult(null); // Reset result
+
+        if (action === 'getAppId') {
+            try {
+                const id = await get_app_id();
+                setActionResult(id);
+            } catch (error) {
+                console.error("Failed to fetch App ID:", error);
+                setActionResult("Error fetching App ID");
+            }
+        }
+
+        if (action === 'createUser') {
+            try {
+                const result = await create_a_new_user();
+                setActionResult(`User ID: ${result.userId}, Status: ${result.status}`);
+            } catch (error) {
+                console.error("Failed to create user:", error);
+                setActionResult("Error creating user");
+            }
+        }
+
+        // Handle other actions if needed
     };
 
     const getActionButtonProps = () => {
@@ -20,12 +46,12 @@ const Profile = () => {
             case 'getAppId':
                 return {
                     icon: faIdBadge,
-                    text: 'Get App ID',
+                    text: actionResult ? `App ID: ${actionResult}` : 'Getting App ID...',
                 };
             case 'createUser':
                 return {
                     icon: faUserPlus,
-                    text: 'Create User',
+                    text: actionResult ? actionResult : 'Creating User...',
                 };
             case 'acquireToken':
                 return {
@@ -55,7 +81,7 @@ const Profile = () => {
     return (
         <ProfileContainer>
             <Sidebar>
-            <SidebarItem onClick={() => handleSidebarClick('getMyProfile')}>
+                <SidebarItem onClick={() => handleSidebarClick('getMyProfile')}>
                     <FontAwesomeIcon icon={faUser} />
                     <span>Get My Profile</span>
                 </SidebarItem>
