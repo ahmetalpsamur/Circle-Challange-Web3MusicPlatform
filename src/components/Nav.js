@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMusic } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 import logo from '../img/logo/Circle_Logo_png.png'; 
 
 const Nav = ({ libraryStatus, setLibraryStatus }) => {
@@ -14,9 +15,9 @@ const Nav = ({ libraryStatus, setLibraryStatus }) => {
 					Library
 					<FontAwesomeIcon icon={faMusic} />
 				</Button>
-				<Button>
-					My Profile	
-				</Button>
+				<StyledLink to="/profile">
+					My Profile
+				</StyledLink>
 			</ButtonContainer>
 		</NavContainer>
 	);
@@ -69,6 +70,21 @@ const Button = styled.button`
 	cursor: pointer;
 	border-radius: 5px;
 	padding: 0.5rem 1rem;
+	transition: background 0.3s ease, color 0.3s ease;
+	&:hover {
+		background: #333;
+		color: #fff;
+	}
+`;
+
+const StyledLink = styled(Link)`
+	background: transparent;
+	border: 2px solid #333;
+	color: #333;
+	cursor: pointer;
+	border-radius: 5px;
+	padding: 0.5rem 1rem;
+	text-decoration: none;
 	transition: background 0.3s ease, color 0.3s ease;
 	&:hover {
 		background: #333;
