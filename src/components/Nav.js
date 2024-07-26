@@ -3,28 +3,33 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMusic } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import logo from '../img/logo/Circle_Logo_png.png'; 
+import logo from '../img/logo/Circle_Logo_png.png';
 
 const Nav = ({ libraryStatus, setLibraryStatus }) => {
 	return (
 		<NavContainer>
-			<Logo src={logo} alt="Logo" />
-			<H1 libraryStatus={libraryStatus}>Web3 Music Platform</H1>
-			<ButtonContainer>
-				<Button onClick={() => setLibraryStatus(!libraryStatus)}>
-					Library
-					<FontAwesomeIcon icon={faMusic} />
-				</Button>
-				<StyledLink to="/profile">
-					My Profile
-				</StyledLink>
-			</ButtonContainer>
+			<NavSection align="flex-start">
+				<Logo src={logo} alt="Logo" />
+			</NavSection>
+			<NavSection align="center">
+				<H1 libraryStatus={libraryStatus}>Web3 Music Platform</H1>
+			</NavSection>
+			<NavSection align="flex-end">
+				<ButtonContainer>
+					<Button onClick={() => setLibraryStatus(!libraryStatus)}>
+						Library
+						<FontAwesomeIcon icon={faMusic} />
+					</Button>
+					<StyledLink to="/profile">
+						My Profile
+					</StyledLink>
+				</ButtonContainer>
+			</NavSection>
 		</NavContainer>
 	);
 };
 
 const NavContainer = styled.div`
-	min-height: 10vh;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -40,6 +45,13 @@ const NavContainer = styled.div`
 		width: 100%;
 		padding: 1rem;
 	}
+`;
+
+const NavSection = styled.div`
+	flex: 1;
+	display: flex;
+	justify-content: ${(props) => props.align};
+	align-items: center;
 `;
 
 const Logo = styled.img`

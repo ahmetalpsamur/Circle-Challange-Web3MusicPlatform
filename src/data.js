@@ -4,7 +4,7 @@ function chillHop() {
 		{
 			name: "Beaver Creek",
 			cover:
-				"https://chillhop.com/wp-content/uploads/2020/09/0255e8b8c74c90d4a27c594b3452b2daafae608d-1024x1024.jpg",
+				"https://w0.peakpx.com/wallpaper/100/154/HD-wallpaper-tame-impala-album-covers-cover-art.jpg",
 			artist: "Aso, Middle School, Aviino",
 			audio: "https://mp3.chillhop.com/serve.php/?mp3=10075",
 			color: ["#205950", "#2ab3bf"],
@@ -14,7 +14,7 @@ function chillHop() {
 		{
 			name: "Daylight",
 			cover:
-				"https://chillhop.com/wp-content/uploads/2020/07/ef95e219a44869318b7806e9f0f794a1f9c451e4-1024x1024.jpg",
+				"https://w0.peakpx.com/wallpaper/372/930/HD-wallpaper-evanescence-the-door-open-evanescence-music-band-cover-amy-lee-album-door.jpg",
 			artist: "Aiguille",
 			audio: "https://mp3.chillhop.com/serve.php/?mp3=9272",
 			color: ["#EF8EA9", "#ab417f"],
@@ -24,7 +24,7 @@ function chillHop() {
 		{
 			name: "Keep Going",
 			cover:
-				"https://chillhop.com/wp-content/uploads/2020/07/ff35dede32321a8aa0953809812941bcf8a6bd35-1024x1024.jpg",
+				"https://w0.peakpx.com/wallpaper/167/1018/HD-wallpaper-jon-bellion-all-time-low-album-cover-art-artwork-artist-digital-art-jon-bellion-artstation.jpg",
 			artist: "Swørn",
 			audio: "https://mp3.chillhop.com/serve.php/?mp3=9222",
 			color: ["#CD607D", "#c94043"],
@@ -34,7 +34,7 @@ function chillHop() {
 		{
 			name: "Nightfall",
 			cover:
-				"https://chillhop.com/wp-content/uploads/2020/07/ef95e219a44869318b7806e9f0f794a1f9c451e4-1024x1024.jpg",
+				"https://w0.peakpx.com/wallpaper/490/632/HD-wallpaper-music-hard-rock-album-cover-heavy-metal-judas-priest.jpg",
 			artist: "Aiguille",
 			audio: "https://mp3.chillhop.com/serve.php/?mp3=9148",
 			color: ["#EF8EA9", "#ab417f"],
