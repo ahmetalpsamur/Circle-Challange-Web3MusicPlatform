@@ -137,6 +137,7 @@ const Player = ({
                             step={0.01}
                             value={volume}
                             onChange={volumeHandler}
+                            currentSong={currentSong} // Pass currentSong to VolumeSlider
                         />
                     </VolumeControl>
                 </RightContainer>
@@ -155,7 +156,7 @@ const PlayerContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(90deg, rgba(54,53,53,1) 0%, rgba(0,0,0,1) 50%, rgba(54,53,53,1) 100%);
     color: white;
     padding: 1rem;
     border-radius: 15px;
@@ -192,7 +193,7 @@ const TextContainer = styled.div`
     h3 {
         margin: 0;
         font-size: 1.6rem;
-		background: radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%);
+        background: radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
@@ -200,8 +201,8 @@ const TextContainer = styled.div`
         margin: 0;
         font-size: 0.8rem;
         color: whitegray;
-		background: radial-gradient(666px at 0.4% 48%, rgb(202, 204, 227) 0%, rgb(89, 89, 99) 97.5%);
-		-webkit-background-clip: text;
+        background: radial-gradient(666px at 0.4% 48%, rgb(202, 204, 227) 0%, rgb(89, 89, 99) 97.5%);
+        -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 `;
@@ -218,7 +219,7 @@ const TimeControlContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-	margin-bottom:5px;
+    margin-bottom: 5px;
 `;
 
 const Track = styled.div`
@@ -231,7 +232,14 @@ const Track = styled.div`
 `;
 
 const AnimateTrack = styled.div`
-    background: ${(p) => p.songInfo.currentTime < p.songInfo.duration ? p.songInfo.currentTime / p.songInfo.duration < 0.5 ? p.songInfo.currentTime / p.songInfo.duration < 0.25 ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.9)' : 'transparent'};
+    background: ${(p) =>
+        p.songInfo.currentTime < p.songInfo.duration
+            ? p.songInfo.currentTime / p.songInfo.duration < 0.5
+                ? p.songInfo.currentTime / p.songInfo.duration < 0.25
+                    ? "rgba(255, 255, 255, 0.5)"
+                    : "rgba(255, 255, 255, 0.7)"
+                : "rgba(255, 255, 255, 0.9)"
+            : "transparent"};
     width: ${(p) => (p.songInfo.currentTime / p.songInfo.duration) * 100}%;
     height: 100%;
     position: absolute;
@@ -278,58 +286,56 @@ const PlayControlContainer = styled.div`
     max-width: 300px;
 `;
 
-// Styled Components
 const RightContainer = styled.div`
     display: flex;
     align-items: center;
     flex: 1;
     justify-content: center;
-    margin: 0 1rem;  // Adjust margin for responsiveness
+    margin: 0 1rem; // Adjust margin for responsiveness
     @media (max-width: 768px) {
-        margin: 0 0.5rem;  // Smaller margins for smaller screens
+        margin: 0 0.5rem; // Smaller margins for smaller screens
     }
 `;
 
-// Styled Components
 const VolumeControl = styled.div`
     display: flex;
     align-items: center;
     position: relative;
     cursor: pointer;
-    margin-left: 1rem;  // Spacing between icon and slider
+    margin-left: 1rem; // Spacing between icon and slider
     @media (max-width: 768px) {
         flex-direction: column;
         align-items: center;
-        margin-left: 0.5rem;  // Adjust margin for smaller screens
+        margin-left: 0.5rem; // Adjust margin for smaller screens
     }
 `;
 
 const VolumeSlider = styled.input`
-    width: 120px;  // Width for volume bar
-    height: 0.6rem;  // Same height as the music progress bar
+    width: 120px; // Width for volume bar
+    height: 0.6rem; // Same height as the music progress bar
     -webkit-appearance: none;
-    background: linear-gradient(to right, #667eea, #764ba2);  // Gradient for the entire track
+    background: linear-gradient(to right, ${(p) => p.currentSong.color[0]}, ${(p) => p.currentSong.color[1]}); // Gradient for the entire track
     cursor: pointer;
-    margin-left: 0.5rem;  // Spacing between icon and slider
-    border-radius: 1rem;  // Match with the progress bar's rounded corners
+    margin-left: 0.5rem; // Spacing between icon and slider
+    border-radius: 1rem; // Match with the progress bar's rounded corners
     position: relative;
     &:focus {
         outline: none;
     }
     &::-webkit-slider-runnable-track {
-        height: 0.6rem;  // Same height as the music progress bar
+        height: 0.6rem; // Same height as the music progress bar
         background: linear-gradient(
             to right,
-            #667eea 0%,
-            #667eea ${(p) => p.value * 100}%,
-            #764ba2 ${(p) => p.value * 100}%,
-            #764ba2 100%
-        );  // Color fill based on current value
+            ${(p) => p.currentSong.color[0]} 0%,
+            ${(p) => p.currentSong.color[0]} ${(p) => p.value * 100}%,
+            ${(p) => p.currentSong.color[1]} ${(p) => p.value * 100}%,
+            ${(p) => p.currentSong.color[1]} 100%
+        ); // Color fill based on current value
         border-radius: 1rem;
     }
     &::-webkit-slider-thumb {
         -webkit-appearance: none;
-        height: 12px;  // Smaller thumb
+        height: 12px; // Smaller thumb
         width: 12px;
         background: #fff;
         border-radius: 50%;
@@ -339,54 +345,55 @@ const VolumeSlider = styled.input`
         transition: background 0.2s ease, transform 0.2s ease;
     }
     &::-moz-range-track {
-        height: 0.6rem;  // Same height as the music progress bar
+        height: 0.6rem; // Same height as the music progress bar
         background: linear-gradient(
             to right,
-            #667eea 0%,
-            #667eea ${(p) => p.value * 100}%,
-            #764ba2 ${(p) => p.value * 100}%,
-            #764ba2 100%
-        );  // Color fill based on current value
+            ${(p) => p.currentSong.color[0]} 0%,
+            ${(p) => p.currentSong.color[0]} ${(p) => p.value * 100}%,
+            ${(p) => p.currentSong.color[1]} ${(p) => p.value * 100}%,
+            ${(p) => p.currentSong.color[1]} 100%
+        ); // Color fill based on current value
         border-radius: 1rem;
     }
     &::-moz-range-thumb {
         background: #fff;
-        height: 12px;  // Smaller thumb
+        height: 12px; // Smaller thumb
         width: 12px;
         border-radius: 50%;
         cursor: pointer;
         transition: background 0.2s ease, transform 0.2s ease;
     }
     &::-ms-track {
-        height: 0.6rem;  // Same height as the music progress bar
+        height: 0.6rem; // Same height as the music progress bar
         background: transparent;
         border-color: transparent;
         color: transparent;
     }
     &::-ms-thumb {
         background: #fff;
-        height: 12px;  // Smaller thumb
+        height: 12px; // Smaller thumb
         width: 12px;
         border-radius: 50%;
         cursor: pointer;
         transition: background 0.2s ease, transform 0.2s ease;
     }
     &:hover::-webkit-slider-thumb {
-        background: #f1f1f1;  // Change color on hover
-        transform: scale(1.5);  // Enlarge thumb on hover
+        background: #f1f1f1; // Change color on hover
+        transform: scale(1.5); // Enlarge thumb on hover
     }
     &:hover::-moz-range-thumb {
-        background: #f1f1f1;  // Change color on hover
-        transform: scale(1.5);  // Enlarge thumb on hover
+        background: #f1f1f1; // Change color on hover
+        transform: scale(1.5); // Enlarge thumb on hover
     }
     &:hover::-ms-thumb {
-        background: #f1f1f1;  // Change color on hover
-        transform: scale(1.5);  // Enlarge thumb on hover
+        background: #f1f1f1; // Change color on hover
+        transform: scale(1.5); // Enlarge thumb on hover
     }
     @media (max-width: 768px) {
-        width: 100px;  // Adjusted width for smaller screens
-        margin-left: 0.25rem;  // Adjusted margin for smaller screens
+        width: 100px; // Adjusted width for smaller screens
+        margin-left: 0.25rem; // Adjusted margin for smaller screens
     }
 `;
+
 const pointer = { cursor: "pointer" };
 export default Player;
