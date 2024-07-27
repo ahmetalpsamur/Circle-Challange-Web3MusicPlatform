@@ -6,6 +6,7 @@ import { get_app_id } from "../api/getAppId";
 import { create_a_new_user } from "../api/createUserId";
 import { acquire_session_token } from "../api/acuqireSessionToken";
 import { initialize_user } from "../api/initializeUser"; // Import the function
+import { completeWallet } from "../api/walletCreate"; // Import the function
 
 const Profile = () => {
     const [selectedAction, setSelectedAction] = useState(null);
@@ -32,6 +33,23 @@ const Profile = () => {
                 case 'initializeUser':
                     const challengeId = await initialize_user();
                     setActionResult(`Challenge ID: ${challengeId}`);
+                    break;
+                case 'completeWallet':
+                    // Fetch the necessary data from environment or API calls
+                    let REACT_APP_ID = process.env.REACT_APP_ID;
+                    let REACT_APP_USER_TOKEN=process.env.REACT_APP_USER_TOKEN;
+                    let REACT_APP_ENCRYPTION_KEY=process.env.REACT_APP_ENCRYPTION_KEY;
+                    console.log("Burası Profile js!");
+                    console.log(REACT_APP_ID);
+                    console.log(REACT_APP_USER_TOKEN);
+                    console.log(REACT_APP_ENCRYPTION_KEY);
+                    console.log(actionResult);
+                    if (REACT_APP_ID && REACT_APP_USER_TOKEN && REACT_APP_ENCRYPTION_KEY) {
+                        const result = await completeWallet(actionResult);
+                        setActionResult(`Wallet creation status: ${result.status}`);
+                    } else {
+                        setActionResult('Missing configuration data.');
+                    }
                     break;
                 default:
                     break;
@@ -72,7 +90,7 @@ const Profile = () => {
             case 'completeWallet':
                 return {
                     icon: faWallet,
-                    text: 'Complete Wallet',
+                    text: actionResult ? actionResult : 'Completing Wallet...',
                 };
             default:
                 return {
