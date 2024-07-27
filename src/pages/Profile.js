@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faIdBadge, faUserPlus, faKey, faUserCheck, faWallet, faUser } from "@fortawesome/free-solid-svg-icons";
-import { get_app_id } from "../api/getAppId"; // Import the function
-import { create_a_new_user } from "../api/createUserId"; // Import the create user function
+import { faIdBadge, faUserPlus, faKey, faUserCheck, faWallet, faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import { get_app_id } from "../api/getAppId";
+import { create_a_new_user } from "../api/createUserId";
+import { acquire_session_token } from "../api/acuqireSessionToken";
+import { initialize_user } from "../api/initializeUser"; // Import the function
 
 const Profile = () => {
     const [selectedAction, setSelectedAction] = useState(null);
@@ -13,27 +15,31 @@ const Profile = () => {
         setSelectedAction(action);
         setActionResult(null); // Reset result
 
-        if (action === 'getAppId') {
-            try {
-                const id = await get_app_id();
-                setActionResult(id);
-            } catch (error) {
-                console.error("Failed to fetch App ID:", error);
-                setActionResult("Error fetching App ID");
+        try {
+            switch (action) {
+                case 'getAppId':
+                    const appId = await get_app_id();
+                    setActionResult(appId);
+                    break;
+                case 'createUser':
+                    const newUser = await create_a_new_user();
+                    setActionResult(`User created with ID: ${newUser.userId}`);
+                    break;
+                case 'acquireToken':
+                    const sessionToken = await acquire_session_token();
+                    setActionResult(`User token: ${sessionToken.userToken}, Encryption key: ${sessionToken.encryptionKey}`);
+                    break;
+                case 'initializeUser':
+                    const challengeId = await initialize_user();
+                    setActionResult(`Challenge ID: ${challengeId}`);
+                    break;
+                default:
+                    break;
             }
+        } catch (error) {
+            console.error(`Failed to perform action: ${action}`, error);
+            setActionResult(`Error performing action: ${action}`);
         }
-
-        if (action === 'createUser') {
-            try {
-                const result = await create_a_new_user();
-                setActionResult(`User ID: ${result.userId}, Status: ${result.status}`);
-            } catch (error) {
-                console.error("Failed to create user:", error);
-                setActionResult("Error creating user");
-            }
-        }
-
-        // Handle other actions if needed
     };
 
     const getActionButtonProps = () => {
@@ -55,13 +61,13 @@ const Profile = () => {
                 };
             case 'acquireToken':
                 return {
-                    icon: faKey,
-                    text: 'Acquire Token',
+                    icon: faLock,
+                    text: actionResult ? actionResult : 'Acquiring Token...',
                 };
             case 'initializeUser':
                 return {
                     icon: faUserCheck,
-                    text: 'Initialize User',
+                    text: actionResult ? `Challenge ID: ${actionResult}` : 'Initializing User...',
                 };
             case 'completeWallet':
                 return {
@@ -94,7 +100,7 @@ const Profile = () => {
                     <span>Create User</span>
                 </SidebarItem>
                 <SidebarItem onClick={() => handleSidebarClick('acquireToken')}>
-                    <FontAwesomeIcon icon={faKey} />
+                    <FontAwesomeIcon icon={faLock} />
                     <span>Acquire Token</span>
                 </SidebarItem>
                 <SidebarItem onClick={() => handleSidebarClick('initializeUser')}>
