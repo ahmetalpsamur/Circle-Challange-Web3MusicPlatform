@@ -1,16 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdBadge, faUserPlus, faKey, faUserCheck, faWallet, faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 import { get_app_id } from "../api/getAppId";
 import { create_a_new_user } from "../api/createUserId";
 import { acquire_session_token } from "../api/acuqireSessionToken";
-import { initialize_user } from "../api/initializeUser"; // Import the function
-import { completeWallet } from "../api/walletCreate"; // Import the function
+import { initialize_user } from "../api/initializeUser";
+import { completeWallet } from "../api/walletCreate";
+
+
+
 
 const Profile = () => {
     const [selectedAction, setSelectedAction] = useState(null);
     const [actionResult, setActionResult] = useState(null);
+    const [profile, setProfile] = useState({ username: '', profile_picture: '' });
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            const username = localStorage.getItem('username'); // Kullanıcı adını buradan alabilirsiniz
+            if (!username) {
+                console.error('Username is not available');
+                return;
+            }
+    
+            try {
+                const response = await axios.get('/api/profile', { params: { username } });
+                setProfile(response.data);
+            } catch (error) {
+                console.error('Failed to fetch profile', error);
+            }
+        };
+        fetchProfile();
+    }, []);
 
     const handleSidebarClick = async (action) => {
         setSelectedAction(action);
@@ -35,10 +58,9 @@ const Profile = () => {
                     setActionResult(`Challenge ID: ${challengeId}`);
                     break;
                 case 'completeWallet':
-                    // Fetch the necessary data from environment or API calls
                     let REACT_APP_ID = process.env.REACT_APP_ID;
-                    let REACT_APP_USER_TOKEN=process.env.REACT_APP_USER_TOKEN;
-                    let REACT_APP_ENCRYPTION_KEY=process.env.REACT_APP_ENCRYPTION_KEY;
+                    let REACT_APP_USER_TOKEN = process.env.REACT_APP_USER_TOKEN;
+                    let REACT_APP_ENCRYPTION_KEY = process.env.REACT_APP_ENCRYPTION_KEY;
                     console.log("Burası Profile js!");
                     console.log(REACT_APP_ID);
                     console.log(REACT_APP_USER_TOKEN);
@@ -139,6 +161,12 @@ const Profile = () => {
                         </ActionButton>
                     )}
                 </ButtonContainer>
+                {selectedAction === 'getMyProfile' && (
+                    <ProfileDetails>
+                        <ProfileImage src={profile.profile_picture} alt="Profile" />
+                        <ProfileUsername>{profile.username}</ProfileUsername>
+                    </ProfileDetails>
+                )}
             </Content>
         </ProfileContainer>
     );
@@ -178,6 +206,7 @@ const SidebarItem = styled.div`
 const Content = styled.div`
     flex: 1;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 `;
@@ -203,6 +232,25 @@ const ActionButton = styled.button`
     &:hover {
         background-color: #2ea043;
     }
+`;
+
+const ProfileDetails = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+`;
+
+const ProfileImage = styled.img`
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+`;
+
+const ProfileUsername = styled.h2`
+    font-size: 1.5rem;
+    color: #c9d1d9;
 `;
 
 export default Profile;
