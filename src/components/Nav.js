@@ -23,6 +23,12 @@ const Nav = ({ libraryStatus, setLibraryStatus }) => {
 					<StyledLink to="/profile">
 						My Profile
 					</StyledLink>
+					<StyledLink to="/login">
+						Login
+					</StyledLink>
+					<StyledLink to="/register">
+						Register
+					</StyledLink>
 				</ButtonContainer>
 			</NavSection>
 		</NavContainer>

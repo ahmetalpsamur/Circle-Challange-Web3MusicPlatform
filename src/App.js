@@ -10,6 +10,8 @@ import Library from "./components/Library";
 import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
 
 // Import data
 import data from "./data";
@@ -67,6 +69,8 @@ const App = () => {
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/profile" element={<Profile />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/register" element={<Register />} />
 				</Routes>
 				<Song currentSong={currentSong} />
 				<Player
